@@ -1,0 +1,310 @@
+paths:
+  /api/users:
+    get:
+      security:
+        - bearerToken: []
+      tags:
+        - Users
+      summary: Get all users
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: '6745452a1324656b68bd251f'
+                    name:
+                      type: string
+                      example: 'Martin Herrera'
+                    email:
+                      type: string
+                      example: 'martin@test.com'
+                    age:
+                      type: integer
+                      example: 28
+                    code:
+                      type: string
+                      example: 'admin'
+                    username:
+                      type: string
+                      example: 'martinchohg'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: 'Internal Server Error'
+                statusCode: 500
+                message: 'Error when trying to get the users list'
+
+    post:
+      security:
+        - bearerToken: []
+      tags:
+        - Users
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'Martin Herrera'
+                email:
+                  type: string
+                  example: 'martin@test.com'
+                age:
+                  type: integer
+                  example: 28
+                code:
+                  type: string
+                  example: 'admin'
+                username:
+                  type: string
+                  example: 'martinchohg'
+              required:
+                - name
+                - email
+                - age
+                - code
+                - username
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '6745452a1324656b68bd251f'
+                  name:
+                    type: string
+                    example: 'Martin Herrera'
+                  email:
+                    type: string
+                    example: 'martin@test.com'
+                  age:
+                    type: integer
+                    example: 28
+                  code:
+                    type: string
+                    example: 'admin'
+                  username:
+                    type: string
+                    example: 'martinchohg'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              examples:
+                email_conflict:
+                  summary: "Email conflict"
+                  value:
+                    message: "User with email 'martin@test.com' already exist"
+                    statusCode: 409
+                    error: 'Conflict'
+                username_conflict:
+                  summary: "Username conflict"
+                  value:
+                    message: "Profile with username 'martinchohg' already exist"
+                    statusCode: 409
+                    error: 'Conflict'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: 'Internal Server Error'
+                statusCode: 500
+                message: 'Error when trying to create a new user'
+
+  /api/users/:userId:
+    get:
+      security:
+        - bearerToken: []
+      tags:
+        - Users
+      summary: Get one user data
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+            example: '6745452a1324656b68bd251d'
+          required: true
+          description: User id
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '6745452a1324656b68bd251f'
+                  name:
+                    type: string
+                    example: 'Martin Herrera'
+                  email:
+                    type: string
+                    example: 'martin@test.com'
+                  age:
+                    type: integer
+                    example: 28
+                  code:
+                    type: string
+                    example: 'admin'
+                  username:
+                    type: string
+                    example: 'martinchohg'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              example:
+                error: 'Not Found'
+                statusCode: 404
+                message: 'User with id "6745452a1324656b68bd251f" not found'
+
+    patch:
+      security:
+        - bearerToken: []
+      tags:
+        - Users
+      summary: Update user information
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+            example: '6745452a1324656b68bd251d'
+          required: true
+          description: User id
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 'Martin Herrera'
+                email:
+                  type: string
+                  example: 'martin@test.com'
+                age:
+                  type: integer
+                  example: 28
+                code:
+                  type: string
+                  example: 'admin'
+                username:
+                  type: string
+                  example: 'martinchohg'        
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '6745452a1324656b68bd251f'
+                  name:
+                    type: string
+                    example: 'Martin Herrera'
+                  email:
+                    type: string
+                    example: 'martin@test.com'
+                  age:
+                    type: integer
+                    example: 28
+                  code:
+                    type: string
+                    example: 'admin'
+                  username:
+                    type: string
+                    example: 'martinchohg'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              example:
+                error: 'Not Found'
+                statusCode: 404
+                message: 'User with id "6745452a1324656b68bd251f" not found'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              example:
+                error: 'Internal Server Error'
+                statusCode: 500
+                message: 'Error when trying to update a user'
+
+    delete:
+      security:
+        - bearerToken: []
+      tags:
+        - Users
+      summary: Delete a user
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+            example: '6745452a1324656b68bd251d'
+          required: true
+          description: User Id
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: '6745452a1324656b68bd251f'
+                  name:
+                    type: string
+                    example: 'Martin Herrera'
+                  email:
+                    type: string
+                    example: 'martin@test.com'
+                  age:
+                    type: integer
+                    example: 28
+                  code:
+                    type: string
+                    example: 'admin'
+                  username:
+                    type: string
+                    example: 'martinchohg'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              example:
+                error: 'Not Found'
+                statusCode: 404
+                message: 'User with id "6745452a1324656b68bd251f" not found'
